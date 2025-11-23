@@ -1,0 +1,428 @@
+:root {
+    --christmas-red: #D42426;
+    --christmas-green: #165B33;
+    --christmas-gold: #F8B229;
+    --snow-white: #FFFFFF;
+    --bg-dark: #0F0F0F;
+    --font-heading: 'Great Vibes', cursive;
+    --font-body: 'Mountains of Christmas', display;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: var(--bg-dark);
+    background-image: linear-gradient(to bottom, #0f0c29, #302b63, #24243e);
+    color: var(--snow-white);
+    font-family: var(--font-body), sans-serif;
+    overflow-x: hidden;
+    min-height: 100vh;
+}
+
+/* Snowfall Animation */
+.snowflake {
+    position: fixed;
+    top: -10px;
+    color: var(--snow-white);
+    font-size: 1em;
+    font-family: Arial;
+    text-shadow: 0 0 1px #000;
+    user-select: none;
+    z-index: 1000;
+    pointer-events: none;
+    animation-name: fall;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+}
+
+@keyframes fall {
+    0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateY(100vh) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+/* App Container */
+.app-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+}
+
+h1 {
+    font-family: var(--font-heading);
+    font-size: 4rem;
+    color: var(--christmas-gold);
+    text-shadow: 0 0 10px rgba(248, 178, 41, 0.5);
+    margin-bottom: 0.5rem;
+}
+
+h2 {
+    color: var(--christmas-red);
+    text-shadow: 1px 1px 0 #fff;
+}
+
+/* Countdown */
+.countdown-container {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin: 3rem 0;
+    flex-wrap: wrap;
+}
+
+.time-box {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(5px);
+    padding: 1.5rem;
+    border-radius: 1rem;
+    border: 2px solid var(--christmas-green);
+    min-width: 100px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.time-value {
+    font-size: 3rem;
+    font-weight: bold;
+    color: var(--christmas-gold);
+    display: block;
+}
+
+.time-label {
+    font-size: 1.2rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Gallery */
+.gallery-section {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 2rem;
+    border-radius: 1rem;
+    margin-top: 3rem;
+}
+
+.upload-btn {
+    background: var(--christmas-red);
+    color: white;
+    border: none;
+    padding: 1rem 2rem;
+    font-size: 1.2rem;
+    font-family: var(--font-body);
+    border-radius: 2rem;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 0 #9e1b1d;
+}
+
+.upload-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 0 #9e1b1d;
+}
+
+.upload-btn:active {
+    transform: translateY(2px);
+    box-shadow: 0 2px 0 #9e1b1d;
+}
+
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1.5rem;
+}
+
+.photo-card {
+    background: white;
+    padding: 10px 10px 40px 10px;
+    /* Polaroid style */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    transform: rotate(var(--rotation));
+    transition: transform 0.3s;
+}
+
+.photo-card:hover {
+    transform: scale(1.05) rotate(0deg);
+    z-index: 10;
+}
+
+.photo-card img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    display: block;
+}
+
+.photo-caption {
+    color: #333;
+    font-family: 'Courier New', monospace;
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+/* Advent Calendar */
+.advent-section {
+    margin: 4rem 0;
+    padding: 2rem;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 20px;
+}
+
+.advent-tree {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.tree-row {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.advent-door {
+    width: 80px;
+    height: 80px;
+    perspective: 1000px;
+    cursor: pointer;
+}
+
+.advent-door-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+}
+
+.advent-door.open .advent-door-inner {
+    transform: rotateY(180deg);
+}
+
+.advent-door-front,
+.advent-door-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.advent-door-front {
+    background: var(--christmas-green);
+    color: var(--christmas-gold);
+    font-family: var(--font-heading);
+    font-size: 2rem;
+    border: 2px solid var(--christmas-gold);
+}
+
+.advent-door-front:hover {
+    background: #1e7e45;
+}
+
+.advent-door-back {
+    background: white;
+    color: black;
+    transform: rotateY(180deg);
+    overflow: hidden;
+}
+
+.advent-door-back img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.advent-door-back span {
+    font-size: 2rem;
+}
+
+/* Navigation */
+.nav-container {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+    padding: 1rem;
+    position: sticky;
+    top: 10px;
+    z-index: 100;
+}
+
+.nav-pill {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 0.8rem 2rem;
+    border-radius: 50px;
+    color: var(--snow-white);
+    font-family: var(--font-body);
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.nav-pill:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.nav-pill.active {
+    background: rgba(212, 36, 38, 0.6);
+    /* Christmas Red tint */
+    border-color: var(--christmas-gold);
+    box-shadow: 0 0 15px rgba(212, 36, 38, 0.4);
+}
+
+/* 3D Christmas Card */
+.card-scene {
+    perspective: 1500px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 2rem;
+}
+
+.card-container {
+    width: 90%;
+    max-width: 800px;
+    min-height: 600px;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 1s cubic-bezier(0.4, 0.0, 0.2, 1);
+    cursor: pointer;
+}
+
+.card-container.open {
+    transform: rotateY(-180deg);
+    cursor: default;
+}
+
+.card-face {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    overflow: hidden;
+    /* Keep content inside rounded corners */
+}
+
+/* Front Cover */
+.card-front {
+    background: linear-gradient(135deg, #D42426 0%, #8B0000 100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border: 5px solid var(--christmas-gold);
+    z-index: 2;
+    transform: rotateY(0deg);
+    /* Explicitly set for clarity */
+}
+
+.card-front h1 {
+    font-size: 5rem;
+    margin: 0;
+    line-height: 1.2;
+}
+
+.card-front .click-hint {
+    margin-top: 2rem;
+    font-size: 1.5rem;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        opacity: 0.6;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 1;
+        transform: scale(1.1);
+    }
+
+    100% {
+        opacity: 0.6;
+        transform: scale(1);
+    }
+}
+
+/* Inside of the Card */
+.card-inside {
+    background: linear-gradient(to bottom, #f0f0f0, #e0e0e0);
+    color: #333;
+    transform: rotateY(180deg);
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-y: auto;
+    /* Allow scrolling if content is long */
+}
+
+.card-inside h2 {
+    color: var(--christmas-green);
+    font-family: var(--font-heading);
+    font-size: 3rem;
+    margin-top: 0;
+}
+
+/* Adjustments for content inside the card */
+.card-inside .countdown-container {
+    margin: 1rem 0;
+}
+
+.card-inside .time-box {
+    background: rgba(22, 91, 51, 0.1);
+    /* Green tint */
+    border-color: var(--christmas-green);
+}
+
+.card-inside .time-value {
+    color: var(--christmas-red);
+}
+
+.card-inside .time-label {
+    color: #555;
+}
+
+.card-inside .gallery-section {
+    background: transparent;
+    width: 100%;
+    padding: 0;
+    margin-top: 1rem;
+}
+
+.card-inside .upload-btn {
+    box-shadow: 0 4px 0 #165B33;
+    background: var(--christmas-green);
+}
+
+.card-inside .upload-btn:hover {
+    box-shadow: 0 6px 0 #165B33;
+}
