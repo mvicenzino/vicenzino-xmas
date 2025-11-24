@@ -24,9 +24,14 @@
 
 @media (max-width: 768px) {
     .music-btn {
-        top: 10px;
-        right: 10px;
-        padding: 8px 15px;
+        top: auto;
+        bottom: 20px;
+        right: 20px;
+        padding: 10px 15px;
         font-size: 1rem;
+        background: rgba(212, 36, 38, 0.8);
+        /* Red background for visibility */
+        border-color: var(--christmas-gold);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
     }
 }

@@ -36,6 +36,15 @@
 
     .card-inside {
         padding: 1rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        /* Center vertically */
+        align-items: center;
+        /* Center horizontally */
+        text-align: center;
+        height: 100%;
+        /* Ensure it takes full height */
     }
 
     .card-inside h2 {
