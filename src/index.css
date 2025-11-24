@@ -8,6 +8,12 @@
     --font-body: 'Mountains of Christmas', display;
 }
 
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
 body {
     margin: 0;
     padding: 0;
@@ -420,6 +426,8 @@ h2 {
     align-items: center;
     overflow-y: auto;
     /* Allow scrolling if content is long */
+    border: 5px solid var(--christmas-gold);
+    /* Match front border */
 }
 
 .card-inside h2 {
