@@ -1,0 +1,82 @@
+/* Mobile Optimization */
+@media (max-width: 768px) {
+    .app-container {
+        padding: 0.5rem;
+        height: auto;
+        /* Allow scrolling on mobile if needed */
+        min-height: 100vh;
+    }
+
+    .main-title {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+    }
+
+    .nav-container {
+        gap: 0.5rem;
+        flex-wrap: wrap;
+    }
+
+    .nav-pill {
+        padding: 0.4rem 1rem;
+        font-size: 0.9rem;
+    }
+
+    .card-scene {
+        margin-top: 1rem;
+        height: auto;
+        min-height: 600px;
+        /* Ensure enough space for the card */
+    }
+
+    .card-container {
+        width: 95%;
+        max-width: 350px;
+    }
+
+    .card-inside {
+        padding: 1rem;
+    }
+
+    .card-inside h2 {
+        font-size: 2rem;
+    }
+
+    .holiday-message {
+        font-size: 1.2rem;
+        max-width: 100%;
+    }
+
+    /* Advent Calendar Mobile */
+    .advent-section {
+        padding: 1rem;
+        width: 95%;
+        box-sizing: border-box;
+    }
+
+    .advent-door {
+        width: 60px;
+        height: 60px;
+    }
+
+    .advent-door-front,
+    .advent-door-back span {
+        font-size: 1.5rem;
+    }
+
+    .tree-row {
+        gap: 0.5rem;
+    }
+
+    /* Santa Mobile */
+    .santa-container {
+        width: 250px;
+        top: 10%;
+    }
+
+    .santa-speech {
+        font-size: 1rem;
+        padding: 5px 10px;
+        top: -40px;
+    }
+}

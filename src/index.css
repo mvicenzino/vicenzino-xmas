@@ -20,41 +20,20 @@ body {
 }
 
 /* Snowfall Animation */
-.snowflake {
-    position: fixed;
-    top: -10px;
-    color: var(--snow-white);
-    font-size: 1em;
-    font-family: Arial;
-    text-shadow: 0 0 1px #000;
-    user-select: none;
-    z-index: 1000;
-    pointer-events: none;
-    animation-name: fall;
-    animation-timing-function: linear;
-    animation-iteration-count: infinite;
-}
-
-@keyframes fall {
-    0% {
-        transform: translateY(0) rotate(0deg);
-        opacity: 1;
-    }
-
-    100% {
-        transform: translateY(100vh) rotate(360deg);
-        opacity: 0;
-    }
-}
+/* Handled by Canvas in App.jsx */
 
 /* App Container */
 .app-container {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 2rem;
+    padding: 1rem;
     text-align: center;
     position: relative;
     z-index: 1;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 h1 {
@@ -63,6 +42,15 @@ h1 {
     color: var(--christmas-gold);
     text-shadow: 0 0 10px rgba(248, 178, 41, 0.5);
     margin-bottom: 0.5rem;
+}
+
+.main-title {
+    font-size: 4rem;
+    margin-top: 0.5rem;
+    margin-bottom: 1rem;
+    line-height: 1;
+    z-index: 10;
+    position: relative;
 }
 
 h2 {
@@ -74,32 +62,35 @@ h2 {
 .countdown-container {
     display: flex;
     justify-content: center;
-    gap: 2rem;
-    margin: 3rem 0;
-    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 1rem 0;
+    flex-wrap: nowrap;
 }
 
 .time-box {
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.2);
     backdrop-filter: blur(5px);
-    padding: 1.5rem;
-    border-radius: 1rem;
-    border: 2px solid var(--christmas-green);
-    min-width: 100px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    border: 1px solid var(--christmas-green);
+    min-width: 60px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .time-value {
-    font-size: 3rem;
+    font-size: 1.5rem;
     font-weight: bold;
-    color: var(--christmas-gold);
+    color: var(--christmas-red);
+    /* Changed to red for better visibility on cream */
     display: block;
+    line-height: 1;
 }
 
 .time-label {
-    font-size: 1.2rem;
+    font-size: 0.7rem;
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 0.5px;
+    color: #4A3B32;
 }
 
 /* Gallery */
@@ -170,8 +161,8 @@ h2 {
 
 /* Advent Calendar */
 .advent-section {
-    margin: 4rem 0;
-    padding: 2rem;
+    margin: 0.5rem 0;
+    padding: 1rem;
     background: rgba(0, 0, 0, 0.2);
     border-radius: 20px;
 }
@@ -180,14 +171,14 @@ h2 {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 1rem;
-    margin-top: 2rem;
+    gap: 0.5rem;
+    margin-top: 1rem;
 }
 
 .tree-row {
     display: flex;
     justify-content: center;
-    gap: 1rem;
+    gap: 0.5rem;
 }
 
 .advent-door {
@@ -258,9 +249,9 @@ h2 {
 .nav-container {
     display: flex;
     justify-content: center;
-    gap: 1.5rem;
-    margin-bottom: 2rem;
-    padding: 1rem;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    padding: 0.5rem;
     position: sticky;
     top: 10px;
     z-index: 100;
@@ -271,11 +262,11 @@ h2 {
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.2);
-    padding: 0.8rem 2rem;
+    padding: 0.5rem 1.5rem;
     border-radius: 50px;
     color: var(--snow-white);
     font-family: var(--font-body);
-    font-size: 1.2rem;
+    font-size: 1rem;
     cursor: pointer;
     transition: all 0.3s ease;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -300,14 +291,19 @@ h2 {
     perspective: 1500px;
     display: flex;
     justify-content: center;
-    align-items: center;
-    margin-top: 2rem;
+    align-items: flex-start;
+    /* Changed from center to move it up */
+    margin-top: 1rem;
+    /* Add a small margin */
+    flex-grow: 1;
+    width: 100%;
 }
 
 .card-container {
     width: 90%;
-    max-width: 800px;
-    min-height: 600px;
+    max-width: 400px;
+    /* Reduced from 500px */
+    aspect-ratio: 5/7;
     position: relative;
     transform-style: preserve-3d;
     transition: transform 1s cubic-bezier(0.4, 0.0, 0.2, 1);
@@ -335,24 +331,63 @@ h2 {
     background: linear-gradient(135deg, #D42426 0%, #8B0000 100%);
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-end;
     align-items: center;
     border: 5px solid var(--christmas-gold);
     z-index: 2;
     transform: rotateY(0deg);
-    /* Explicitly set for clarity */
+    overflow: hidden;
+    padding-bottom: 2rem;
+}
+
+.card-front-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 1;
+}
+
+.card-front-content {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: rgba(22, 91, 51, 0.8);
+    /* Christmas Green background */
+    padding: 1rem 2rem;
+    border-radius: 50px;
+    backdrop-filter: blur(5px);
+    border: 2px solid var(--christmas-gold);
+    width: auto;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    transition: transform 0.2s;
+}
+
+.card-front-content:hover {
+    transform: scale(1.05);
+    background: rgba(22, 91, 51, 0.95);
+    cursor: pointer;
 }
 
 .card-front h1 {
-    font-size: 5rem;
+    font-size: 3.5rem;
     margin: 0;
-    line-height: 1.2;
+    line-height: 1.1;
 }
 
 .card-front .click-hint {
-    margin-top: 2rem;
+    margin-top: 0;
     font-size: 1.5rem;
-    animation: pulse 2s infinite;
+    color: var(--christmas-gold);
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    animation: none;
+    /* Remove pulse from text, maybe apply to button if needed */
 }
 
 @keyframes pulse {
@@ -374,8 +409,10 @@ h2 {
 
 /* Inside of the Card */
 .card-inside {
-    background: linear-gradient(to bottom, #f0f0f0, #e0e0e0);
-    color: #333;
+    background: linear-gradient(to bottom, #FFF8E7, #FFE4C4);
+    /* Warm Cream / Bisque gradient */
+    color: #4A3B32;
+    /* Darker warm brown for text */
     transform: rotateY(180deg);
     padding: 2rem;
     display: flex;

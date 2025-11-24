@@ -1,38 +1,128 @@
 import { useState, useEffect } from 'react';
+import './decorations.css';
+import './message.css';
+import './santa.css';
+import './mobile.css';
+import './modal.css';
+import './music.css';
+import adventDay1 from './assets/advent-day-1.jpg';
+import adventDay2 from './assets/advent-day-2.jpg';
+import coverPhoto from './assets/cover-photo.jpg';
 
 // --- Snowfall Component ---
 const Snowfall = () => {
-    const [snowflakes, setSnowflakes] = useState([]);
-
     useEffect(() => {
-        const flakes = Array.from({ length: 50 }).map((_, i) => ({
-            id: i,
-            left: Math.random() * 100 + 'vw',
-            animationDuration: Math.random() * 3 + 2 + 's',
-            animationDelay: Math.random() * 5 + 's',
-            opacity: Math.random()
-        }));
-        setSnowflakes(flakes);
+        const canvas = document.getElementById('snow-canvas');
+        const ctx = canvas.getContext('2d');
+        let width = window.innerWidth;
+        let height = window.innerHeight;
+        canvas.width = width;
+        canvas.height = height;
+
+        let particles = [];
+        const particleCount = 150;
+        let mouse = { x: -100, y: -100 };
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.radius = Math.random() * 3 + 1;
+                this.speedY = Math.random() * 1 + 0.5;
+                this.speedX = Math.random() * 0.5 - 0.25;
+                this.opacity = Math.random() * 0.5 + 0.3;
+            }
+
+            update() {
+                // Move down
+                this.y += this.speedY;
+                this.x += this.speedX;
+
+                // Mouse interaction (repel)
+                const dx = this.x - mouse.x;
+                const dy = this.y - mouse.y;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+                const maxDistance = 100;
+
+                if (distance < maxDistance) {
+                    const forceDirectionX = dx / distance;
+                    const forceDirectionY = dy / distance;
+                    const force = (maxDistance - distance) / maxDistance;
+                    const directionX = forceDirectionX * force * 5;
+                    const directionY = forceDirectionY * force * 5;
+
+                    this.x += directionX;
+                    this.y += directionY;
+                }
+
+                // Reset if out of bounds
+                if (this.y > height) {
+                    this.y = -10;
+                    this.x = Math.random() * width;
+                }
+                if (this.x > width) this.x = 0;
+                if (this.x < 0) this.x = width;
+            }
+
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
+                ctx.fill();
+            }
+        }
+
+        const init = () => {
+            particles = [];
+            for (let i = 0; i < particleCount; i++) {
+                particles.push(new Particle());
+            }
+        };
+
+        const animate = () => {
+            ctx.clearRect(0, 0, width, height);
+            particles.forEach(particle => {
+                particle.update();
+                particle.draw();
+            });
+            requestAnimationFrame(animate);
+        };
+
+        const handleResize = () => {
+            width = window.innerWidth;
+            height = window.innerHeight;
+            canvas.width = width;
+            canvas.height = height;
+            init();
+        };
+
+        const handleMouseMove = (e) => {
+            mouse.x = e.clientX;
+            mouse.y = e.clientY;
+        };
+
+        const handleTouchMove = (e) => {
+            if (e.touches.length > 0) {
+                mouse.x = e.touches[0].clientX;
+                mouse.y = e.touches[0].clientY;
+            }
+        };
+
+        window.addEventListener('resize', handleResize);
+        window.addEventListener('mousemove', handleMouseMove);
+        window.addEventListener('touchmove', handleTouchMove);
+
+        init();
+        animate();
+
+        return () => {
+            window.removeEventListener('resize', handleResize);
+            window.removeEventListener('mousemove', handleMouseMove);
+            window.removeEventListener('touchmove', handleTouchMove);
+        };
     }, []);
 
-    return (
-        <div className="snow-container">
-            {snowflakes.map(flake => (
-                <div
-                    key={flake.id}
-                    className="snowflake"
-                    style={{
-                        left: flake.left,
-                        animationDuration: flake.animationDuration,
-                        animationDelay: flake.animationDelay,
-                        opacity: flake.opacity
-                    }}
-                >
-                    ❄
-                </div>
-            ))}
-        </div>
-    );
+    return <canvas id="snow-canvas" style={{ position: 'fixed', top: 0, left: 0, pointerEvents: 'none', zIndex: 0 }} />;
 };
 
 // --- Countdown Component ---
@@ -127,15 +217,29 @@ const Gallery = () => {
     );
 };
 
+// --- Santa Component ---
+const SantaSleigh = () => (
+    <div className="santa-container">
+        <div className="santa-speech">Ho, Ho, Ho! 🔔</div>
+        <div className="santa-sleigh">🦌🦌🦌🛷🎅</div>
+    </div>
+);
+
 // --- Advent Calendar Component ---
 const AdventCalendar = () => {
     const [openDoors, setOpenDoors] = useState({});
+    const [selectedImage, setSelectedImage] = useState(null);
 
     const toggleDoor = (day) => {
         setOpenDoors(prev => ({
             ...prev,
             [day]: !prev[day]
         }));
+    };
+
+    const handleImageClick = (e, imageSrc) => {
+        e.stopPropagation(); // Prevent closing the door when clicking the image
+        setSelectedImage(imageSrc);
     };
 
     // 12 Days of Christmas - Tree Shape Layout
@@ -147,9 +251,11 @@ const AdventCalendar = () => {
         [11, 12]
     ];
 
-    // Placeholder images
+    // Surprises content
     const surprises = {
-        1: '🎄', 2: '🎅', 3: '⛄', 4: '🎁',
+        1: adventDay1,
+        2: adventDay2,
+        3: '⛄', 4: '🎁',
         5: '🦌', 6: '🍪', 7: '🥛', 8: '🕯️',
         9: '🔔', 10: '🎶', 11: '🌟', 12: '👼'
     };
@@ -169,7 +275,16 @@ const AdventCalendar = () => {
                                 <div className="advent-door-inner">
                                     <div className="advent-door-front">{day}</div>
                                     <div className="advent-door-back">
-                                        <span>{surprises[day]}</span>
+                                        {[1, 2].includes(day) ? (
+                                            <img
+                                                src={surprises[day]}
+                                                alt={`Day ${day} Surprise`}
+                                                onClick={(e) => handleImageClick(e, surprises[day])}
+                                                style={{ cursor: 'zoom-in' }}
+                                            />
+                                        ) : (
+                                            <span>{surprises[day]}</span>
+                                        )}
                                     </div>
                                 </div>
                             </div>
@@ -177,6 +292,16 @@ const AdventCalendar = () => {
                     </div>
                 ))}
             </div>
+
+            {/* Image Modal */}
+            {selectedImage && (
+                <div className="image-modal" onClick={() => setSelectedImage(null)}>
+                    <div className="modal-content">
+                        <img src={selectedImage} alt="Enlarged Memory" />
+                        <button className="close-modal" onClick={() => setSelectedImage(null)}>×</button>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };
@@ -192,16 +317,116 @@ const ChristmasCard = () => {
                 onClick={() => !isOpen && setIsOpen(true)}
             >
                 <div className="card-face card-front">
-                    <h1>Merry<br />Christmas</h1>
-                    <div className="click-hint">Click to Open ✨</div>
+                    <img src={coverPhoto} alt="Merry Christmas" className="card-front-image" />
+                    <div className="card-decorations">
+                        <div className="garland-top"></div>
+                        <div className="bell bell-left">🔔</div>
+                        <div className="bell bell-right">🔔</div>
+                    </div>
+                    <div className="card-front-content">
+                        <div className="click-hint">Click to Open ✨</div>
+                    </div>
                 </div>
                 <div className="card-face card-inside">
                     <h2>The Vicenzino Family</h2>
+                    <p className="holiday-message">
+                        Wishing you a holiday season filled with love, laughter, and the warmth of family.<br />
+                        Merry Christmas and a Happy New Year!
+                    </p>
                     <Countdown />
-                    <Gallery />
                 </div>
             </div>
         </div>
+    );
+};
+
+// --- Music Player Component ---
+const MusicPlayer = () => {
+    const [isPlaying, setIsPlaying] = useState(false);
+    const [audioContext, setAudioContext] = useState(null);
+    const [nextNoteTime, setNextNoteTime] = useState(0);
+    const [timerId, setTimerId] = useState(null);
+
+    const melody = [
+        { note: 'E4', duration: 0.25 }, { note: 'E4', duration: 0.25 }, { note: 'E4', duration: 0.5 }, // Jingle bells
+        { note: 'E4', duration: 0.25 }, { note: 'E4', duration: 0.25 }, { note: 'E4', duration: 0.5 }, // Jingle bells
+        { note: 'E4', duration: 0.25 }, { note: 'G4', duration: 0.25 }, { note: 'C4', duration: 0.375 }, { note: 'D4', duration: 0.125 }, { note: 'E4', duration: 1 }, // Jingle all the way
+        { note: 'F4', duration: 0.25 }, { note: 'F4', duration: 0.25 }, { note: 'F4', duration: 0.375 }, { note: 'F4', duration: 0.125 }, // Oh what fun
+        { note: 'F4', duration: 0.25 }, { note: 'E4', duration: 0.25 }, { note: 'E4', duration: 0.25 }, { note: 'E4', duration: 0.125 }, { note: 'E4', duration: 0.125 }, // it is to ride
+        { note: 'E4', duration: 0.25 }, { note: 'D4', duration: 0.25 }, { note: 'D4', duration: 0.25 }, { note: 'E4', duration: 0.25 }, { note: 'D4', duration: 0.5 }, { note: 'G4', duration: 0.5 } // in a one horse open sleigh
+    ];
+
+    const noteFrequencies = {
+        'C4': 261.63, 'D4': 293.66, 'E4': 329.63, 'F4': 349.23, 'G4': 392.00
+    };
+
+    const playNote = (ctx, freq, time, duration) => {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+
+        osc.type = 'triangle'; // Softer sound
+        osc.frequency.value = freq;
+
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+
+        osc.start(time);
+        gain.gain.setValueAtTime(0.1, time);
+        gain.gain.exponentialRampToValueAtTime(0.001, time + duration - 0.05);
+        osc.stop(time + duration);
+    };
+
+    const scheduler = (ctx, startCallback) => {
+        let currentNote = 0;
+        let startTime = ctx.currentTime + 0.1;
+
+        const schedule = () => {
+            // Schedule ahead
+            while (startTime < ctx.currentTime + 1.5) {
+                if (currentNote >= melody.length) {
+                    currentNote = 0; // Loop
+                    startTime += 0.5; // Pause between loops
+                }
+
+                const { note, duration } = melody[currentNote];
+                playNote(ctx, noteFrequencies[note], startTime, duration * 0.8); // Play slightly shorter for articulation
+                startTime += duration;
+                currentNote++;
+            }
+            const id = requestAnimationFrame(schedule);
+            setTimerId(id);
+        };
+        schedule();
+    };
+
+    const togglePlay = () => {
+        if (isPlaying) {
+            if (audioContext) {
+                audioContext.close();
+                setAudioContext(null);
+            }
+            if (timerId) cancelAnimationFrame(timerId);
+            setIsPlaying(false);
+        } else {
+            const ctx = new (window.AudioContext || window.webkitAudioContext)();
+            setAudioContext(ctx);
+            scheduler(ctx);
+            setIsPlaying(true);
+        }
+    };
+
+    // Cleanup
+    useEffect(() => {
+        return () => {
+            if (audioContext) audioContext.close();
+            if (timerId) cancelAnimationFrame(timerId);
+        };
+    }, []);
+
+    return (
+        <button className="music-btn" onClick={togglePlay}>
+            {isPlaying ? '🔇 Stop Music' : '🎵 Play Music'}
+        </button>
     );
 };
 
@@ -212,6 +437,9 @@ const App = () => {
     return (
         <div className="app-container">
             <Snowfall />
+            <MusicPlayer />
+
+            <h1 className="main-title">Merry Christmas</h1>
 
             <nav className="nav-container">
                 <button
@@ -232,8 +460,8 @@ const App = () => {
                 <ChristmasCard />
             ) : (
                 <>
-                    <h1>Merry Christmas!</h1>
-                    <p style={{ fontSize: '1.5rem', marginBottom: '2rem' }}>The Vicenzino Family</p>
+                    <SantaSleigh />
+                    <p style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>The Vicenzino Family</p>
                     <AdventCalendar />
                 </>
             )}

@@ -1,0 +1,92 @@
+/* Decorations */
+.card-decorations {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 3;
+    overflow: hidden;
+    border-radius: 15px;
+    /* Match card border radius */
+}
+
+.garland-top {
+    position: absolute;
+    top: -15px;
+    left: -2%;
+    width: 104%;
+    height: 60px;
+    /* Create a scalloped pine shape */
+    background:
+        /* Red Berries */
+        radial-gradient(circle at 50% 70%, #D42426 4px, transparent 5px),
+        radial-gradient(circle at 45% 65%, #D42426 3px, transparent 4px),
+        radial-gradient(circle at 55% 65%, #D42426 3px, transparent 4px),
+        /* Pine Needles Texture - Darker Green */
+        radial-gradient(circle at 50% -10px, transparent 30px, #0f4023 31px, #0f4023 45px, transparent 46px),
+        /* Pine Needles Texture - Lighter Green */
+        radial-gradient(circle at 50% -10px, transparent 30px, #165B33 31px, #165B33 40px, transparent 41px);
+    background-size: 60px 60px;
+    background-repeat: repeat-x;
+    filter: drop-shadow(0 4px 4px rgba(0, 0, 0, 0.4));
+    z-index: 10;
+}
+
+/* Add some sparkle to the garland */
+.garland-top::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background:
+        radial-gradient(circle at 25% 60%, rgba(255, 255, 255, 0.8) 1px, transparent 2px),
+        radial-gradient(circle at 75% 60%, rgba(255, 255, 255, 0.8) 1px, transparent 2px);
+    background-size: 60px 60px;
+    opacity: 0.6;
+    animation: twinkle 2s infinite alternate;
+}
+
+@keyframes twinkle {
+    0% {
+        opacity: 0.3;
+    }
+
+    100% {
+        opacity: 0.8;
+    }
+}
+
+.bell {
+    position: absolute;
+    top: 25px;
+    font-size: 2rem;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+    transform-origin: top center;
+    animation: bellSwing 3s ease-in-out infinite;
+}
+
+.bell-left {
+    left: 15px;
+    animation-delay: 0s;
+}
+
+.bell-right {
+    right: 15px;
+    animation-delay: 1.5s;
+}
+
+@keyframes bellSwing {
+
+    0%,
+    100% {
+        transform: rotate(-10deg);
+    }
+
+    50% {
+        transform: rotate(10deg);
+    }
+}
