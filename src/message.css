@@ -7,3 +7,11 @@
     line-height: 1.4;
     max-width: 80%;
 }
+
+.signature {
+    font-family: var(--font-heading);
+    font-size: 2rem;
+    color: var(--christmas-red);
+    margin-top: 2rem;
+    text-align: center;
+}

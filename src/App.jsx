@@ -351,6 +351,7 @@ const ChristmasCard = () => {
                         Merry Christmas and a Happy New Year!
                     </p>
                     <Countdown />
+                    <p className="signature">Love - Mike, Carolyn, Sebby and Jax</p>
                 </div>
             </div>
         </div>
