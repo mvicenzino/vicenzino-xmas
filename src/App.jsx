@@ -359,87 +359,28 @@ const ChristmasCard = () => {
 };
 
 // --- Music Player Component ---
+import letItSnow from './assets/let-it-snow.mp3';
+
 const MusicPlayer = () => {
     const [isPlaying, setIsPlaying] = useState(false);
-    const [audioContext, setAudioContext] = useState(null);
-    const [nextNoteTime, setNextNoteTime] = useState(0);
-    const [timerId, setTimerId] = useState(null);
+    const [audio] = useState(new Audio(letItSnow));
 
-    const melody = [
-        { note: 'E4', duration: 0.25 }, { note: 'E4', duration: 0.25 }, { note: 'E4', duration: 0.5 }, // Jingle bells
-        { note: 'E4', duration: 0.25 }, { note: 'E4', duration: 0.25 }, { note: 'E4', duration: 0.5 }, // Jingle bells
-        { note: 'E4', duration: 0.25 }, { note: 'G4', duration: 0.25 }, { note: 'C4', duration: 0.375 }, { note: 'D4', duration: 0.125 }, { note: 'E4', duration: 1 }, // Jingle all the way
-        { note: 'F4', duration: 0.25 }, { note: 'F4', duration: 0.25 }, { note: 'F4', duration: 0.375 }, { note: 'F4', duration: 0.125 }, // Oh what fun
-        { note: 'F4', duration: 0.25 }, { note: 'E4', duration: 0.25 }, { note: 'E4', duration: 0.25 }, { note: 'E4', duration: 0.125 }, { note: 'E4', duration: 0.125 }, // it is to ride
-        { note: 'E4', duration: 0.25 }, { note: 'D4', duration: 0.25 }, { note: 'D4', duration: 0.25 }, { note: 'E4', duration: 0.25 }, { note: 'D4', duration: 0.5 }, { note: 'G4', duration: 0.5 } // in a one horse open sleigh
-    ];
-
-    const noteFrequencies = {
-        'C4': 261.63, 'D4': 293.66, 'E4': 329.63, 'F4': 349.23, 'G4': 392.00
-    };
-
-    const playNote = (ctx, freq, time, duration) => {
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-
-        osc.type = 'triangle'; // Softer sound
-        osc.frequency.value = freq;
-
-        osc.connect(gain);
-        gain.connect(ctx.destination);
-
-        osc.start(time);
-        gain.gain.setValueAtTime(0.1, time);
-        gain.gain.exponentialRampToValueAtTime(0.001, time + duration - 0.05);
-        osc.stop(time + duration);
-    };
-
-    const scheduler = (ctx, startCallback) => {
-        let currentNote = 0;
-        let startTime = ctx.currentTime + 0.1;
-
-        const schedule = () => {
-            // Schedule ahead
-            while (startTime < ctx.currentTime + 1.5) {
-                if (currentNote >= melody.length) {
-                    currentNote = 0; // Loop
-                    startTime += 0.5; // Pause between loops
-                }
-
-                const { note, duration } = melody[currentNote];
-                playNote(ctx, noteFrequencies[note], startTime, duration * 0.8); // Play slightly shorter for articulation
-                startTime += duration;
-                currentNote++;
-            }
-            const id = requestAnimationFrame(schedule);
-            setTimerId(id);
+    useEffect(() => {
+        audio.loop = true;
+        return () => {
+            audio.pause();
+            audio.currentTime = 0;
         };
-        schedule();
-    };
+    }, [audio]);
 
     const togglePlay = () => {
         if (isPlaying) {
-            if (audioContext) {
-                audioContext.close();
-                setAudioContext(null);
-            }
-            if (timerId) cancelAnimationFrame(timerId);
-            setIsPlaying(false);
+            audio.pause();
         } else {
-            const ctx = new (window.AudioContext || window.webkitAudioContext)();
-            setAudioContext(ctx);
-            scheduler(ctx);
-            setIsPlaying(true);
+            audio.play().catch(e => console.error("Error playing audio:", e));
         }
+        setIsPlaying(!isPlaying);
     };
-
-    // Cleanup
-    useEffect(() => {
-        return () => {
-            if (audioContext) audioContext.close();
-            if (timerId) cancelAnimationFrame(timerId);
-        };
-    }, []);
 
     return (
         <button className="music-btn" onClick={togglePlay}>

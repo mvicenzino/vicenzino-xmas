@@ -27,11 +27,20 @@
         height: auto;
         min-height: 600px;
         /* Ensure enough space for the card */
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        width: 100%;
+        padding-bottom: 80px;
+        /* Space for the bottom music button */
     }
 
     .card-container {
-        width: 95%;
-        max-width: 350px;
+        width: 85%;
+        /* Reduced width to prevent cutoff */
+        max-width: 340px;
+        margin: 0 auto;
+        /* Force centering */
     }
 
     .card-inside {
