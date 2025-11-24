@@ -7,6 +7,16 @@ import './modal.css';
 import './music.css';
 import adventDay1 from './assets/advent-day-1.jpg';
 import adventDay2 from './assets/advent-day-2.jpg';
+import adventDay3 from './assets/advent-day-3.jpg';
+import adventDay4 from './assets/advent-day-4.jpg';
+import adventDay5 from './assets/advent-day-5.jpg';
+import adventDay6 from './assets/advent-day-6.jpg';
+import adventDay7 from './assets/advent-day-7.jpg';
+import adventDay8 from './assets/advent-day-8.jpg';
+import adventDay9 from './assets/advent-day-9.jpg';
+import adventDay10 from './assets/advent-day-10.jpg';
+import adventDay11 from './assets/advent-day-11.jpg';
+import adventDay12 from './assets/advent-day-12.jpg';
 import coverPhoto from './assets/cover-photo.jpg';
 
 // --- Snowfall Component ---
@@ -255,9 +265,16 @@ const AdventCalendar = () => {
     const surprises = {
         1: adventDay1,
         2: adventDay2,
-        3: '⛄', 4: '🎁',
-        5: '🦌', 6: '🍪', 7: '🥛', 8: '🕯️',
-        9: '🔔', 10: '🎶', 11: '🌟', 12: '👼'
+        3: adventDay3,
+        4: adventDay4,
+        5: adventDay5,
+        6: adventDay6,
+        7: adventDay7,
+        8: adventDay8,
+        9: adventDay9,
+        10: adventDay10,
+        11: adventDay11,
+        12: adventDay12
     };
 
     return (
@@ -275,7 +292,7 @@ const AdventCalendar = () => {
                                 <div className="advent-door-inner">
                                     <div className="advent-door-front">{day}</div>
                                     <div className="advent-door-back">
-                                        {[1, 2].includes(day) ? (
+                                        {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].includes(day) ? (
                                             <img
                                                 src={surprises[day]}
                                                 alt={`Day ${day} Surprise`}
