@@ -411,7 +411,7 @@ const App = () => {
                     className={`nav-pill ${currentView === 'advent' ? 'active' : ''}`}
                     onClick={() => setCurrentView('advent')}
                 >
-                    Advent Calendar 🎁
+                    Photos 🎁
                 </button>
             </nav>
 
