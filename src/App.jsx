@@ -345,7 +345,7 @@ const ChristmasCard = () => {
                     </div>
                 </div>
                 <div className="card-face card-inside">
-                    <h2>The Vicenzino Family</h2>
+                    <h2>Happy Holidays!</h2>
                     <p className="holiday-message">
                         Wishing you a holiday season filled with love, laughter, and the warmth of family.<br />
                         Merry Christmas and a Happy New Year!
